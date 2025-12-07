@@ -48,10 +48,8 @@ async function handleProxy(request: Request): Promise<Response> {
          headers: payload.headers || {},
       };
 
-      if (payload.body !== undefined) {
-         fetchOptions.body = typeof payload.body === "string"
-            ? payload.body
-            : JSON.stringify(payload.body);
+      if (payload.body && (payload.method == "POST" || payload.method == "PATCH" || payload.method == "PUT")) {
+         fetchOptions.body = JSON.stringify(payload.body)
       }
 
       const response = await fetch(payload.url, fetchOptions);
